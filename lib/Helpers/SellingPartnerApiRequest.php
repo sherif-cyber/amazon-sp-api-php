@@ -98,7 +98,7 @@ trait SellingPartnerApiRequest
     /**
      * @throws ApiException
      */
-    private function sendRequest(Request $request, string $returnType): array
+    private function sendRequest(Request $request, string $returnType, $tryNumber = 1): array
     {
         try {
             $options = $this->createHttpClientOption();
@@ -140,6 +140,14 @@ trait SellingPartnerApiRequest
                 case 401:
                 case 400:
                 case 200:
+                    if($e->getCode() == 429) {
+                        // Too Many Requests
+                        if($tryNumber <= 4){
+                            \Illuminate\Support\Facades\Log::info('amazon too many requests so try again... ' . $tryNumber);
+                            sleep(120);//120s
+                            return $this->sendRequest($request, $returnType, ++$tryNumber); 
+                        }
+                    }
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         $returnType,

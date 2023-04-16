@@ -12,6 +12,9 @@ package is not maintained and there's some issues needs to be fixed.
 > 
 > ClouSale\AmazonSellingPartnerAPI\Models\Finances\DateTime.
 
+- fix upgrade to php7.4
+> parent not in scope
+> pulling changes from https://github.com/clousale/amazon-sp-api-php/pull/138
 
 # orignial repo.
 https://github.com/clousale/amazon-sp-api-php
